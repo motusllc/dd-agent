@@ -8,9 +8,10 @@ from utils.service_discovery.abstract_config_store import CONFIG_FROM_AUTOCONF, 
 
 from utils.service_discovery.etcd_config_store import EtcdStore
 from utils.service_discovery.consul_config_store import ConsulStore
+from utils.service_discovery.json_file_config_store import JsonStore
 
 
-SD_CONFIG_BACKENDS = ['etcd', 'consul']  # noqa: used somewhere else
+SD_CONFIG_BACKENDS = ['etcd', 'consul', 'json']  # noqa: used somewhere else
 SD_TEMPLATE_DIR = '/datadog/check_configs'
 
 
@@ -19,6 +20,8 @@ def get_config_store(agentConfig):
         return EtcdStore(agentConfig)
     elif agentConfig.get('sd_config_backend') == 'consul':
         return ConsulStore(agentConfig)
+    elif agentConfig.get('sd_config_backend') == 'json':
+        return JsonStore(agentConfig)
     else:
         return StubStore(agentConfig)
 
